@@ -19,7 +19,8 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -212,6 +213,7 @@
     <Compile Include="Models\CodeFirst\Helpers\RefreshAuthenticationHelper.cs" />
     <Compile Include="Models\CodeFirst\Household.cs" />
     <Compile Include="Models\CodeFirst\IBudget.cs" />
+    <Compile Include="Models\CodeFirst\InvitationModel.cs" />
     <Compile Include="Models\CodeFirst\Notification.cs" />
     <Compile Include="Models\CodeFirst\Transaction.cs" />
     <Compile Include="Models\CodeFirst\Universal.cs" />

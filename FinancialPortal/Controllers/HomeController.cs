@@ -37,11 +37,34 @@ namespace FinancialPortal.Controllers
             return View();
         }
 
-        public ActionResult CreateJoinHousehold()
+
+
+
+
+        public ActionResult CreateJoinHousehold([Bind(Include = "Id,Name,AuthorId")] Household household)
         {
             //Implementation for creating and joining household
+            if (ModelState.IsValid)
+            {
+                var user = db.Users.Find(User.Identity.GetUserId());
+
+                if (user != null)
+                {
+                    user.HouseholdId = household.Id;
+                    db.Households.Add(household);
+                    db.SaveChanges();
+                }
+
+                return RedirectToAction("Index", "Households", new { id = household.Id });
+            }
+
             return View();
         }
+
+
+
+
+
 
         public async Task<ActionResult> LeaveHousehold()
         {

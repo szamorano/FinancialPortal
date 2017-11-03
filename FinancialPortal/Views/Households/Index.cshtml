@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FinancialPortal.Models.CodeFirst.Household>
+﻿@model FinancialPortal.Models.CodeFirst.Household
 
 @{
     ViewBag.Title = "Index";
@@ -9,7 +9,44 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+
+
+
+
+@if (Model.BankAccount.Count() == 0)
+{
+    <p>Before viewing information associated with your household, you must create an account href="@Url.Action("Create", "Accounts")".</p>
+}
+else
+{
+    if (Model.BankAccount.SelectMany(a => a.BankAccountTransactions).Count() == 0)
+    {
+        <p>One last step: click the "new transaction" button to add a transaction.</p>
+    }
+    else
+    {
+        <h2>MY HOUSEHOLD</h2><hr />
+       
+        <h3>@Model.HouseholdName</h3>
+
+
+
+
+
+
+
+
+
+
+    }
+}
+
+
+
+
+
+
+@*<table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.HouseholdName)
@@ -49,4 +86,4 @@
     </tr>
 }
 
-</table>
+</table>*@

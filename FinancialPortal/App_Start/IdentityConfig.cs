@@ -54,12 +54,6 @@ namespace FinancialPortal
 
 
 
-
-
-
-
-
-
     public class EmailService : IIdentityMessageService
     {
         public Task SendAsync(IdentityMessage message)

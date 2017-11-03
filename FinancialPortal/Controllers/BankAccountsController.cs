@@ -11,6 +11,7 @@ using FinancialPortal.Models.CodeFirst;
 
 namespace FinancialPortal.Controllers
 {
+    [Authorize]
     public class BankAccountsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

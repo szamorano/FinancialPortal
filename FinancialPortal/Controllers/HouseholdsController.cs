@@ -20,13 +20,13 @@ namespace FinancialPortal.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Households
-        public ActionResult Index()
-        {
-            return View(db.Households.ToList());
-        }
+        //public ActionResult Index()
+        //{
+        //    return View(db.Households.ToList());
+        //}
 
         // GET: Households/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Index(int? id)
         {
             if (id == null)
             {
@@ -51,7 +51,7 @@ namespace FinancialPortal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task <ActionResult> Create([Bind(Include = "Id,HouseholdName,HouseholdDescription,HouseholdAmountRange,HouseholdCreatedDate")] Household household)
+        public async Task<ActionResult> Create([Bind(Include = "Id,HouseholdName,HouseholdDescription,HouseholdAmountRange,HouseholdCreatedDate")] Household household)
         {
 
             var user = db.Users.Find(User.Identity.GetUserId());
@@ -126,6 +126,27 @@ namespace FinancialPortal.Controllers
             db.Households.Remove(household);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // GET: Household Join
+        public ActionResult Join(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Household household = db.Households.Find(id);
+            if (household == null)
+            {
+                return HttpNotFound();
+            }
+            return View(household);
+        }
+
+        // GET: Households/Invite
+        public ActionResult Invite()
+        {
+        return View();
         }
 
         protected override void Dispose(bool disposing)
