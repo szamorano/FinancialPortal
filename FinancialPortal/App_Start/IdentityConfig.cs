@@ -34,6 +34,8 @@ namespace FinancialPortal
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(GmailUsername, GmailPassword)
             })
+
+
             {
                 try
                 {

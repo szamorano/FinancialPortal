@@ -9,11 +9,13 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FinancialPortal.Models;
+using FinancialPortal.Models.CodeFirst;
 
 namespace FinancialPortal.Controllers
 {
+   
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : Universal
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -137,8 +139,18 @@ namespace FinancialPortal.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
-        public ActionResult Register()
+        public ActionResult Register(int? id)
         {
+            RegisterViewModel model = new RegisterViewModel();
+            if (id != null)
+            {
+                Household household = db.Households.Find(id);
+                if (household != null)
+                {
+                    model.HouseholdId = id;
+                    ViewBag.HouseholdName = household.HouseholdName;
+                }
+            }
             return View();
         }
 
@@ -151,7 +163,7 @@ namespace FinancialPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, HouseholdId = model.HouseholdId };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -162,6 +174,9 @@ namespace FinancialPortal.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+
+
 
                     return RedirectToAction("Index", "Home");
                 }

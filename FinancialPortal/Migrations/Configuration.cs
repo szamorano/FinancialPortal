@@ -74,7 +74,12 @@ namespace FinancialPortal.Migrations
 
 
 
-
+            //if (!context.Category.Any(c => c.Name == "Entertainment"))
+            //{
+            //    var category = new Category();
+            //    category.Name = "Entertainment";
+            //    context.Categories.Add(category);
+            //}
 
 
 

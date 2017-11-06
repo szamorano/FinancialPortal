@@ -205,6 +205,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CodeFirst\Category.cs" />
     <Compile Include="Models\CodeFirst\BankAccount.cs" />
     <Compile Include="Models\CodeFirst\Budget.cs" />
     <Compile Include="Models\CodeFirst\EmailModel.cs" />
@@ -317,9 +318,12 @@
     <Content Include="Views\Transactions\Details.cshtml" />
     <Content Include="Views\Transactions\Edit.cshtml" />
     <Content Include="Views\Transactions\Index.cshtml" />
+    <Content Include="Views\Households\JoinHousehold.cshtml" />
+    <Content Include="Views\Households\InviteToJoin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -11,6 +11,8 @@ using FinancialPortal.Models.CodeFirst;
 using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
 using FinancialPortal.Models.CodeFirst.Helpers;
+using System.Net.Mail;
+using System.Configuration;
 
 namespace FinancialPortal.Controllers
 {
@@ -20,13 +22,13 @@ namespace FinancialPortal.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Households
-        //public ActionResult Index()
-        //{
-        //    return View(db.Households.ToList());
-        //}
+        public ActionResult Index()
+        {
+            return View(db.Households.ToList());
+        }
 
         // GET: Households/Details/5
-        public ActionResult Index(int? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -128,8 +130,8 @@ namespace FinancialPortal.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Household Join
-        public ActionResult Join(int? id)
+        // GET: Household/Join
+        public ActionResult JoinHousehold(int? id)
         {
             if (id == null)
             {
@@ -144,9 +146,63 @@ namespace FinancialPortal.Controllers
         }
 
         // GET: Households/Invite
-        public ActionResult Invite()
+        [AuthorizeHouseholdRequired]
+        public ActionResult InviteToJoin()
         {
         return View();
+        }
+
+        // POST: Households/Invite
+        [AuthorizeHouseholdRequired]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> InviteToJoin(InvitationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var invitee = db.Users.FirstOrDefault(u => u.Email == model.EmailTo);
+                    var me = db.Users.Find(User.Identity.GetUserId());
+                    model.Id = me.HouseholdId.Value;
+                    if (invitee != null && invitee.HouseholdId == model.Id)
+                    {
+                        return RedirectToAction("UserAlreadyAssignedToHousehold");
+                    }
+
+                    var callbackUrl = "";
+                    if (invitee != null)
+                    {
+                        callbackUrl = Url.Action("JoinHousehold", "Households", new { id = model.Id }, protocol: Request.Url.Scheme);
+                    }
+                    else
+                    {
+                        callbackUrl = Url.Action("Register", "Account", new { id = model.Id }, protocol: Request.Url.Scheme);
+                    }
+
+                    var body = "<p>Email From: <bold>{0}</bold>({1})</p><p>Message:</p><p>{2}</p>";
+                    var from = "FinancialPortal<" + me.Email + ">";
+                    var subject = "Invitation to Join Household!";
+                    var to = model.EmailTo;
+
+
+                    var email = new MailMessage(from, to)
+                    {
+                        Subject = subject,
+                        Body = string.Format(body, me.FullName, model.Body, "Please click on the link below to confirm invitation: <br /> <a href=\" " + callbackUrl + "\">Link to invitation.</a>"),
+                        IsBodyHtml = true
+                    };
+                    var svc = new PersonalEmail();
+                    await svc.SendAsync(email);
+                    return RedirectToAction("InviteSent");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    await Task.FromResult(0);
+                }
+            }
+            return View(model);
         }
 
         protected override void Dispose(bool disposing)

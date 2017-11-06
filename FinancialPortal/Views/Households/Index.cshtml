@@ -1,4 +1,4 @@
-﻿@model FinancialPortal.Models.CodeFirst.Household
+﻿@model IEnumerable<FinancialPortal.Models.CodeFirst.Household>
 
 @{
     ViewBag.Title = "Index";
@@ -46,16 +46,13 @@ else
 
 
 
-@*<table class="table">
+<table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.HouseholdName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.HouseholdDescription)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HouseholdAmountRange)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.HouseholdCreatedDate)
@@ -72,9 +69,6 @@ else
             @Html.DisplayFor(modelItem => item.HouseholdDescription)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.HouseholdAmountRange)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.HouseholdCreatedDate)
         </td>
         <td>
@@ -86,4 +80,4 @@ else
     </tr>
 }
 
-</table>*@
+</table>

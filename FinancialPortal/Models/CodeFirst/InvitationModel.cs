@@ -8,7 +8,7 @@ namespace FinancialPortal.Models.CodeFirst
 {
     public class InvitationModel
     {
-
+        public int Id { get; set; }
         public int HouseholdId { get; set; }
         [Required]
         public string Body { get; set; }
