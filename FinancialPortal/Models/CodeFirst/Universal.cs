@@ -22,6 +22,10 @@ namespace FinancialPortal.Models.CodeFirst
                 ViewBag.FullName = user.FullName;
                 ViewBag.ProfilePic = user.ProfilePic;
                 ViewBag.Notifications = user.Notifications.ToList();
+                if(user.HouseholdId != 0)
+                {
+                    ViewBag.userHID = user.HouseholdId;
+                }
 
                 base.OnActionExecuting(filterContext);
             }

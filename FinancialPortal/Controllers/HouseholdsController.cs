@@ -22,9 +22,15 @@ namespace FinancialPortal.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Households
-        public ActionResult Index()
+        [AuthorizeHouseholdRequired]
+        public ActionResult Index(int? id)
         {
-            return View(db.Households.ToList());
+            //var user = db.Users.Find(User.Identity.GetUserId());
+            //return View(db.Households.FirstOrDefault(h => h.Id == user.HouseholdId));
+            var household = db.Households.Find(id);
+            //return View(user.HouseholdId);
+            return View(household);
+
         }
 
         // GET: Households/Details/5
@@ -60,14 +66,17 @@ namespace FinancialPortal.Controllers
 
             if (ModelState.IsValid)
             {
+
+
                 db.Households.Add(household);
                 db.SaveChanges();
-
+                user.HouseholdId = household.Id;
+                db.SaveChanges();
                 await HttpContext.RefreshAuthentication(db.Users.Find(User.Identity.GetUserId()));
 
 
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = household.Id });
             }
 
             return View(household);
@@ -130,27 +139,67 @@ namespace FinancialPortal.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Household/Join
-        public ActionResult JoinHousehold(int? id)
+
+        //GET
+        public ActionResult CreateJoinHousehold()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Household household = db.Households.Find(id);
-            if (household == null)
-            {
-                return HttpNotFound();
-            }
-            return View(household);
+            return View();
         }
+
+
+        // POST: Household/Join
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateJoinHousehold([Bind(Include = "Id,Name,AuthorId")] Household household)
+        {
+            //Implementation for creating and joining household
+            if (ModelState.IsValid)
+            {
+                var user = db.Users.Find(User.Identity.GetUserId());
+
+                if (user != null)
+                {
+                    household.HouseholdCreatedDate = DateTime.Now;
+                    db.Households.Add(household);
+                    db.SaveChanges();
+                    user.HouseholdId = household.Id;
+                    db.SaveChanges();
+                }
+
+                return RedirectToAction("Index", "Households", new { id = household.Id });
+            }
+
+            return View();
+        }
+
+
+
 
         // GET: Households/Invite
         [AuthorizeHouseholdRequired]
         public ActionResult InviteToJoin()
         {
-        return View();
+            var user = db.Users.Find(User.Identity.GetUserId());
+            InvitationModel invite = new InvitationModel();
+            invite.HouseholdId = (int)user.HouseholdId;
+            return View(invite);
         }
+
+        // GET: Households/Invite
+        [AuthorizeHouseholdRequired]
+        public ActionResult UserAlreadyAssignedToHousehold()
+        {
+            return View();
+        }
+
+        // POST: Households/Invite
+        [AuthorizeHouseholdRequired]
+        [HttpPost]
+        public async Task<ActionResult> UserAlreadyAssignedToHousehold(InvitationModel model)
+        {
+            return View();
+        }
+
 
         // POST: Households/Invite
         [AuthorizeHouseholdRequired]
@@ -177,7 +226,7 @@ namespace FinancialPortal.Controllers
                     }
                     else
                     {
-                        callbackUrl = Url.Action("Register", "Account", new { id = model.Id }, protocol: Request.Url.Scheme);
+                        callbackUrl = Url.Action("Register", "Account", new { id = model.HouseholdId }, protocol: Request.Url.Scheme);
                     }
 
                     var body = "<p>Email From: <bold>{0}</bold>({1})</p><p>Message:</p><p>{2}</p>";
@@ -189,7 +238,7 @@ namespace FinancialPortal.Controllers
                     var email = new MailMessage(from, to)
                     {
                         Subject = subject,
-                        Body = string.Format(body, me.FullName, model.Body, "Please click on the link below to confirm invitation: <br /> <a href=\" " + callbackUrl + "\">Link to invitation.</a>"),
+                        Body = string.Format(body, me.FullName, model.Body, "Please click on the link below to confirm invitation: <br /> <a href=\"" + callbackUrl + "\">Link to invitation.</a>"),
                         IsBodyHtml = true
                     };
                     var svc = new PersonalEmail();
@@ -204,6 +253,34 @@ namespace FinancialPortal.Controllers
             }
             return View(model);
         }
+
+        // GET: Households/Create
+        public ActionResult InviteSent()
+        {
+            return View();
+        }
+
+        // GET: Households/Leave
+        public ActionResult LeaveHousehold()
+        {
+            var currentHouseholdId = User.Identity.GetHouseholdId();
+            var currentHousehold = db.Households.Find(currentHouseholdId);
+            return View(currentHousehold);
+        }
+
+
+        // POST: Households/Leave
+        [HttpPost]
+        public async Task<ActionResult> LeaveHousehold([Bind(Include = "Id,Name,Created,AuthorId")] Household household)
+        {
+            var user = db.Users.Find(User.Identity.GetUserId());
+            user.HouseholdId = null;
+            db.SaveChanges();
+
+            await HttpContext.RefreshAuthentication(user);
+            return RedirectToAction("Index", "Home"); // Eventually the splash page.
+        }
+
 
         protected override void Dispose(bool disposing)
         {

@@ -1,0 +1,58 @@
+﻿@model FinancialPortal.Models.CodeFirst.BankAccount
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>BankAccount</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Household.HouseholdName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Household.HouseholdName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BankAccountType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BankAccountType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BankAccountBalance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BankAccountBalance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BankAccountName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BankAccountName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BankAccountIsJoint)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BankAccountIsJoint)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FinancialPortal.Models.CodeFirst.Household>
+﻿@model FinancialPortal.Models.CodeFirst.Household
 
 @{
     ViewBag.Title = "Index";
@@ -10,10 +10,17 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
+<h2>@Model.HouseholdName</h2>
+
+
+@foreach (var member in Model.HouseholdMember)
+{
+    <p>@member.FullName</p>
+}
 
 
 
-@if (Model.BankAccount.Count() == 0)
+@*@if (Model.BankAccount.Count() == 0)
 {
     <p>Before viewing information associated with your household, you must create an account href="@Url.Action("Create", "Accounts")".</p>
 }
@@ -39,7 +46,7 @@ else
 
 
     }
-}
+}*@
 
 
 
@@ -60,24 +67,27 @@ else
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.HouseholdName)
+            @Html.DisplayFor(modelItem => Model.HouseholdName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.HouseholdDescription)
+            @Html.DisplayFor(modelItem => Model.HouseholdDescription)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.HouseholdCreatedDate)
+            @Html.DisplayFor(modelItem => Model.HouseholdCreatedDate)
         </td>
         <td>
             @Html.ActionLink("Bank Accounts", "Index", "BankAccounts") |
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=Model.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=Model.Id })
         </td>
     </tr>
-}
+
 
 </table>
+
+
+@Html.ActionLink("Invite To Join", "InviteToJoin", "Households")

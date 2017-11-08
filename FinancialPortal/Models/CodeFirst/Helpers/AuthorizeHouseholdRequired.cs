@@ -31,7 +31,7 @@ namespace FinancialPortal.Models.CodeFirst.Helpers
             {
                 filterContext.Result = new RedirectToRouteResult
                     (new RouteValueDictionary
-                    (new { controller = "Home", action = "CreateJoinHousehold" }));
+                    (new { controller = "Households", action = "CreateJoinHousehold" }));
             }
         }
     }

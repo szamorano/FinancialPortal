@@ -11,15 +11,14 @@ using FinancialPortal.Models.CodeFirst;
 
 namespace FinancialPortal.Controllers
 {
-    [Authorize]
-    public class TransactionsController : Controller
+    public class TransactionsController : Universal
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Transactions
         public ActionResult Index()
         {
-            var transactions = db.Transactions.Include(t => t.Author).Include(t => t.BankAccount);
+            var transactions = db.Transactions.Include(t => t.Author).Include(t => t.BankAccount).Include(t => t.Category).Include(t => t.TransactionType);
             return View(transactions.ToList());
         }
 
@@ -43,6 +42,8 @@ namespace FinancialPortal.Controllers
         {
             ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName");
             ViewBag.BankAccountId = new SelectList(db.BankAccounts, "Id", "BankAccountType");
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
+            ViewBag.TransactionTypeId = new SelectList(db.TransactionTypes, "Id", "Type");
             return View();
         }
 
@@ -51,7 +52,7 @@ namespace FinancialPortal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Amount,Description,Category,Credit,Debit,BankAccountId,AuthorId,DateCreated")] Transaction transaction)
+        public ActionResult Create([Bind(Include = "Id,Amount,Description,CategoryId,TransactionTypeId,BankAccountId,AuthorId,DateCreated,Void")] Transaction transaction)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +63,8 @@ namespace FinancialPortal.Controllers
 
             ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", transaction.AuthorId);
             ViewBag.BankAccountId = new SelectList(db.BankAccounts, "Id", "BankAccountType", transaction.BankAccountId);
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", transaction.CategoryId);
+            ViewBag.TransactionTypeId = new SelectList(db.TransactionTypes, "Id", "Type", transaction.TransactionTypeId);
             return View(transaction);
         }
 
@@ -79,6 +82,8 @@ namespace FinancialPortal.Controllers
             }
             ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", transaction.AuthorId);
             ViewBag.BankAccountId = new SelectList(db.BankAccounts, "Id", "BankAccountType", transaction.BankAccountId);
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", transaction.CategoryId);
+            ViewBag.TransactionTypeId = new SelectList(db.TransactionTypes, "Id", "Type", transaction.TransactionTypeId);
             return View(transaction);
         }
 
@@ -87,7 +92,7 @@ namespace FinancialPortal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Amount,Description,Category,Credit,Debit,BankAccountId,AuthorId,DateCreated")] Transaction transaction)
+        public ActionResult Edit([Bind(Include = "Id,Amount,Description,CategoryId,TransactionTypeId,BankAccountId,AuthorId,DateCreated,Void")] Transaction transaction)
         {
             if (ModelState.IsValid)
             {
@@ -97,6 +102,8 @@ namespace FinancialPortal.Controllers
             }
             ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", transaction.AuthorId);
             ViewBag.BankAccountId = new SelectList(db.BankAccounts, "Id", "BankAccountType", transaction.BankAccountId);
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", transaction.CategoryId);
+            ViewBag.TransactionTypeId = new SelectList(db.TransactionTypes, "Id", "Type", transaction.TransactionTypeId);
             return View(transaction);
         }
 

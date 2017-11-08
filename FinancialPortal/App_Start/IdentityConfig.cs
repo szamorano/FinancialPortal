@@ -58,10 +58,45 @@ namespace FinancialPortal
 
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            var GmailUsername = WebConfigurationManager.AppSettings["username"];
+            var GmailPassword = WebConfigurationManager.AppSettings["password"];
+            var host = WebConfigurationManager.AppSettings["host"];
+            int port = Convert.ToInt32(WebConfigurationManager.AppSettings["port"]);
+
+            using (var smtp = new SmtpClient()
+
+            {
+                Host = host,
+                Port = port,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(GmailUsername, GmailPassword)
+
+            })
+
+            using (var email = new MailMessage("Financial Portal<steven.zamorano@gmail.com>", message.Destination)
+            {
+                Subject = message.Subject,
+                IsBodyHtml = true,
+                Body = message.Body
+            })
+
+            {
+                try
+                {
+                    await smtp.SendMailAsync(email);
+                }
+
+                catch (Exception e)
+
+                {
+                    Console.WriteLine(e.Message);
+                    await Task.FromResult(0);
+                }
+            };
         }
     }
 

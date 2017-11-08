@@ -28,6 +28,22 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.Category.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransactionType.Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransactionType.Type)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Amount)
         </dt>
 
@@ -44,35 +60,19 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Category)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Credit)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Credit)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Debit)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Debit)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.DateCreated)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Void)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Void)
         </dd>
 
     </dl>

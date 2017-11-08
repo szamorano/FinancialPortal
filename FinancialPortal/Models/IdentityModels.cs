@@ -70,6 +70,9 @@ namespace FinancialPortal.Models
         public DbSet<Household> Households { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Frequency> Frequencies{ get; set; }
+        public DbSet<TransactionType> TransactionTypes { get; set; }
 
+        public System.Data.Entity.DbSet<FinancialPortal.Models.Category> Categories { get; set; }
     }
 }

@@ -151,7 +151,7 @@ namespace FinancialPortal.Controllers
                     ViewBag.HouseholdName = household.HouseholdName;
                 }
             }
-            return View();
+            return View(model);
         }
 
         //
@@ -163,7 +163,7 @@ namespace FinancialPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, HouseholdId = model.HouseholdId };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, HouseholdId = model.HouseholdId, FirstName=model.FirstName, LastName=model.LastName };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -218,7 +218,7 @@ namespace FinancialPortal.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null)  /*!(await UserManager.IsEmailConfirmedAsync(user.Id)))*/
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");

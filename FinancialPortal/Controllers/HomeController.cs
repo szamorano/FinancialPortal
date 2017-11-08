@@ -13,6 +13,7 @@ using System.Web.Services.Description;
 
 namespace FinancialPortal.Controllers
 {
+    [Authorize]
     public class HomeController : Universal
     {
 
@@ -50,8 +51,10 @@ namespace FinancialPortal.Controllers
 
                 if (user != null)
                 {
-                    user.HouseholdId = household.Id;
+                    household.HouseholdCreatedDate = DateTime.Now;
                     db.Households.Add(household);
+                    db.SaveChanges();
+                    user.HouseholdId = household.Id;
                     db.SaveChanges();
                 }
 
