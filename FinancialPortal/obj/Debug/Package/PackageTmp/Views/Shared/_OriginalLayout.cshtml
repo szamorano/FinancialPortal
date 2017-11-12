@@ -24,7 +24,14 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Household", "Index", "Households")</li>
+                    @if (ViewBag.userHID != null)
+                    {
+                        <li>@Html.ActionLink("Household", "Index", "Households", new { id = ViewBag.userHID }, null)</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Create Household", "Create", "Households")</li>
+                    }
                     <li>@Html.ActionLink("Bank Accounts", "Index", "BankAccounts")</li>
                     <li>@Html.ActionLink("Transactions", "Index", "Transactions")</li>
                     

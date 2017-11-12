@@ -121,3 +121,6 @@ C:\Users\User\Documents\Visual Studio 2017\Projects\FinancialPortal\FinancialPor
 C:\Users\User\Documents\Visual Studio 2017\Projects\FinancialPortal\FinancialPortal\bin\Microsoft.AspNet.TelemetryCorrelation.xml
 C:\Users\User\Documents\Visual Studio 2017\Projects\FinancialPortal\FinancialPortal\bin\System.Diagnostics.DiagnosticSource.xml
 C:\Users\User\Documents\Visual Studio 2017\Projects\FinancialPortal\FinancialPortal\obj\Release\FinancialPortal.csprojResolveAssemblyReference.cache
+C:\Users\User\Documents\Visual Studio 2017\Projects\FinancialPortal\FinancialPortal\bin\FluentDateTime.dll
+C:\Users\User\Documents\Visual Studio 2017\Projects\FinancialPortal\FinancialPortal\bin\FluentDateTime.pdb
+C:\Users\User\Documents\Visual Studio 2017\Projects\FinancialPortal\FinancialPortal\bin\FluentDateTime.xml

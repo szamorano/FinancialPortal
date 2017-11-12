@@ -1,0 +1,45 @@
+﻿@model FinancialPortal.Models.CodeFirst.Household
+
+@{
+    ViewBag.Title = "Confirm Joining Household";
+}
+
+<h2>JoinHousehold</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Household</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HouseholdName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model=> model.HouseholdName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HouseholdDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.HouseholdDescription)
+                @*<p>@Model.HouseholdDescription</p>*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Join Household" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@Html.ActionLink("Create Household", "Create", "Index")
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

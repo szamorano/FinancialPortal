@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using FinancialPortal.Models;
 using FinancialPortal.Models.CodeFirst;
+using Microsoft.AspNet.Identity;
 
 namespace FinancialPortal.Controllers
 {
@@ -52,12 +53,29 @@ namespace FinancialPortal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Amount,Description,CategoryId,TransactionTypeId,BankAccountId,AuthorId,DateCreated,Void")] Transaction transaction)
+        public ActionResult Create([Bind(Include = "Id,Amount,Description,CategoryId,TransactionTypeId,BankAccountId")] Transaction transaction)
         {
             if (ModelState.IsValid)
             {
+                var user = db.Users.Find(User.Identity.GetUserId());
+
+                transaction.AuthorId = user.Id;
+                transaction.DateCreated = DateTime.Now;
+                transaction.Void = false;
                 db.Transactions.Add(transaction);
+
+                BankAccount bankAccount = db.BankAccounts.Find(transaction.BankAccountId);
+
+                if (transaction.TransactionTypeId == 1)
+                {
+                    bankAccount.BankAccountBalance -= transaction.Amount;
+                }
+                else
+                { 
+                    bankAccount.BankAccountBalance += transaction.Amount;
+                }
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 

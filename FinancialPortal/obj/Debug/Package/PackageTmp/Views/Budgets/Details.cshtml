@@ -1,0 +1,66 @@
+﻿@model FinancialPortal.Models.CodeFirst.Budget
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Budget</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Frequency.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Frequency.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Household.HouseholdName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Household.HouseholdName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BudgetCategory)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BudgetCategory)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BudgetDuration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BudgetDuration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BudgetName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BudgetName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

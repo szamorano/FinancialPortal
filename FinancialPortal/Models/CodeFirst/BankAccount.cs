@@ -8,6 +8,7 @@ namespace FinancialPortal.Models.CodeFirst
     public class BankAccount
     {
         public int Id { get; set; }
+        public DateTime Open { get; set; }
         public string BankAccountType { get; set; }
         public decimal BankAccountBalance { get; set; }
         public decimal BankAccountDeposit { get; set; }
@@ -18,5 +19,8 @@ namespace FinancialPortal.Models.CodeFirst
 
         public virtual Household Household { get; set; }
         public virtual ICollection<Transaction> BankAccountTransactions { get; set; }
+
+
+
     }
 }

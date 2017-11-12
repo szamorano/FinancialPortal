@@ -73,6 +73,47 @@ namespace FinancialPortal.Migrations
             userManager.AddToRole(userId_ryan, "Customer");
 
 
+            if (!context.Categories.Any(c => c.Name == "Entertainment"))
+            {
+                var category = new Category();
+                category.Name = "Entertainment";
+                context.Categories.Add(category);
+            }
+            if (!context.Categories.Any(c => c.Name == "Clothing"))
+            {
+                var category = new Category();
+                category.Name = "Clothing";
+                context.Categories.Add(category);
+            }
+            if (!context.Categories.Any(c => c.Name == "Mortgage"))
+            {
+                var category = new Category();
+                category.Name = "Mortgage";
+                context.Categories.Add(category);
+            }
+            if (!context.Categories.Any(c => c.Name == "Rent"))
+            {
+                var category = new Category();
+                category.Name = "Rent";
+                context.Categories.Add(category);
+            }
+            if (!context.Categories.Any(c => c.Name == "Utilities"))
+            {
+                var category = new Category();
+                category.Name = "Utilities";
+                context.Categories.Add(category);
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
 
             //if (!context.Category.Any(c => c.Name == "Entertainment"))
             //{
@@ -96,6 +137,4 @@ namespace FinancialPortal.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-        }
-    }
-}
+        

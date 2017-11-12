@@ -185,20 +185,13 @@ namespace FinancialPortal.Controllers
             return View(invite);
         }
 
-        // GET: Households/Invite
+        // GET: Households/UserAlreadyAssignedToHousehold
         [AuthorizeHouseholdRequired]
         public ActionResult UserAlreadyAssignedToHousehold()
         {
             return View();
         }
 
-        // POST: Households/Invite
-        [AuthorizeHouseholdRequired]
-        [HttpPost]
-        public async Task<ActionResult> UserAlreadyAssignedToHousehold(InvitationModel model)
-        {
-            return View();
-        }
 
 
         // POST: Households/Invite
@@ -260,6 +253,12 @@ namespace FinancialPortal.Controllers
             return View();
         }
 
+        // GET: Households/Create
+        public ActionResult Leave()
+        {
+            return View();
+        }
+
         // GET: Households/Leave
         public ActionResult LeaveHousehold()
         {
@@ -271,7 +270,7 @@ namespace FinancialPortal.Controllers
 
         // POST: Households/Leave
         [HttpPost]
-        public async Task<ActionResult> LeaveHousehold([Bind(Include = "Id,Name,Created,AuthorId")] Household household)
+        public async Task<ActionResult> LeaveHousehold(int id)
         {
             var user = db.Users.Find(User.Identity.GetUserId());
             user.HouseholdId = null;
