@@ -110,12 +110,6 @@
     <div class="menu-wrap">
         <nav class="profile-menu">
             <div class="profile"><img src="@ViewBag.ProfilePic" width="60" /><span>@ViewBag.FullName</span></div>
-            <div class="profile-menu-list">
-                <a href="#"><i class="fa fa-star"></i><span>Favorites</span></a>
-                <a href="#"><i class="fa fa-bell"></i><span>Alerts</span></a>
-                <a href="#"><i class="fa fa-envelope"></i><span>Messages</span></a>
-                <a href="#"><i class="fa fa-comment"></i><span>Comments</span></a>
-            </div>
         </nav>
         <button class="close-button" id="close-button">Close Menu</button>
     </div>
@@ -301,8 +295,11 @@
                     </div>
                 </div>
                 <ul class="menu accordion-menu">
-                    <li class="active"><a href="@Url.Action("Index", "Home", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>                  
+                    <li><a href="@Url.Action("Index", "Home", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-map-marker"></span><p>Dashboard</p></a></li>                  
                     <li><a href="@Url.Action("ProfilePage", "Admin", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
+                    <li><a href="@Url.Action("Index", "Households", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-home"></span><p>Households</p></a></li>
+                    <li><a href="@Url.Action("Index", "BankAccounts", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-briefcase"></span><p>Bank Accounts</p></a></li>
+                    <li><a href="@Url.Action("Index", "Transactions", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Transactions</p></a></li>
                         
                 </ul>
             </div><!-- Page Sidebar Inner -->
