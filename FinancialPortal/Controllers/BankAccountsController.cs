@@ -20,7 +20,9 @@ namespace FinancialPortal.Controllers
         // GET: BankAccounts
         public ActionResult Index()
         {
-            var bankAccounts = db.BankAccounts.Include(b => b.Household);
+            var user = db.Users.Find(User.Identity.GetUserId());
+
+            var bankAccounts = db.BankAccounts.Where(a => a.HouseholdId == user.HouseholdId).Include(b => b.Household);
             return View(bankAccounts.ToList());
         }
 
@@ -94,11 +96,7 @@ namespace FinancialPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                var balance = bankAccount.BankAccountBalance;
-             
-                    var newBalance = balance - bankAccount.BankAccountWithdrawal;
-                    bankAccount.BankAccountBalance = newBalance;
-                
+               
                 db.Entry(bankAccount).State = EntityState.Modified;
 
                 db.SaveChanges();

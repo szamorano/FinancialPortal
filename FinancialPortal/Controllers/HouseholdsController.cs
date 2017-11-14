@@ -63,7 +63,7 @@ namespace FinancialPortal.Controllers
         {
 
             var user = db.Users.Find(User.Identity.GetUserId());
-
+            household.HouseholdCreatedDate = DateTime.Now;
             if (ModelState.IsValid)
             {
 
