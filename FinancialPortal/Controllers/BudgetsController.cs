@@ -9,18 +9,20 @@ using System.Web.Mvc;
 using FinancialPortal.Models;
 using FinancialPortal.Models.CodeFirst;
 using Microsoft.AspNet.Identity;
+using FinancialPortal.Models.CodeFirst.Helpers;
 
 namespace FinancialPortal.Controllers
 {
+    [AuthorizeHouseholdRequired]
     public class BudgetsController : Universal
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Budgets
         public ActionResult Index()
         {
-            var budgets = db.Budgets.Include(b => b.Frequency).Include(b => b.Household);
-            return View(budgets.ToList());
+            var user = db.Users.Find(User.Identity.GetUserId());
+            var budgets = user.Household.HouseholdBudget.ToList();
+            return View(budgets);
         }
 
         // GET: Budgets/Details/5
@@ -43,6 +45,7 @@ namespace FinancialPortal.Controllers
         {
             ViewBag.FrequencyId = new SelectList(db.Frequencies, "Id", "Name");
             ViewBag.HouseholdId = new SelectList(db.Households, "Id", "HouseholdName");
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
             return View();
         }
 
@@ -51,18 +54,19 @@ namespace FinancialPortal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FrequencyId,StartAmount,BudgetCategory,BudgetDuration,BudgetName,HouseholdId")] Budget budget)
+        public ActionResult Create([Bind(Include = "Id,FrequencyId,StartAmount,CategoryId,BudgetDuration,BudgetName,HouseholdId")] Budget budget)
         {
             if (ModelState.IsValid)
             {
                 var user = db.Users.Find(User.Identity.GetUserId());
 
+                budget.AuthorId = user.Id;
                 budget.HouseholdId = user.HouseholdId.Value;
                 db.Budgets.Add(budget);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", budget.CategoryId);
             ViewBag.FrequencyId = new SelectList(db.Frequencies, "Id", "Name", budget.FrequencyId);
             ViewBag.HouseholdId = new SelectList(db.Households, "Id", "HouseholdName", budget.HouseholdId);
             return View(budget);
@@ -80,6 +84,8 @@ namespace FinancialPortal.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", budget.CategoryId);
             ViewBag.FrequencyId = new SelectList(db.Frequencies, "Id", "Name", budget.FrequencyId);
             ViewBag.HouseholdId = new SelectList(db.Households, "Id", "HouseholdName", budget.HouseholdId);
             return View(budget);
@@ -90,7 +96,7 @@ namespace FinancialPortal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FrequencyId,StartAmount,BudgetCategory,BudgetDuration,BudgetName,HouseholdId")] Budget budget)
+        public ActionResult Edit([Bind(Include = "Id,FrequencyId,StartAmount,CategoryId,BudgetDuration,BudgetName,HouseholdId")] Budget budget)
         {
             if (ModelState.IsValid)
             {
@@ -98,6 +104,8 @@ namespace FinancialPortal.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", budget.CategoryId);
             ViewBag.FrequencyId = new SelectList(db.Frequencies, "Id", "Name", budget.FrequencyId);
             ViewBag.HouseholdId = new SelectList(db.Households, "Id", "HouseholdName", budget.HouseholdId);
             return View(budget);

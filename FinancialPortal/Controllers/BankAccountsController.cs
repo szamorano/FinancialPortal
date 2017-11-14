@@ -9,21 +9,21 @@ using System.Web.Mvc;
 using FinancialPortal.Models;
 using FinancialPortal.Models.CodeFirst;
 using Microsoft.AspNet.Identity;
+using FinancialPortal.Models.CodeFirst.Helpers;
 
 namespace FinancialPortal.Controllers
 {
-    [Authorize]
-    public class BankAccountsController : Controller
+    [AuthorizeHouseholdRequired]
+    public class BankAccountsController : Universal
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: BankAccounts
         public ActionResult Index()
         {
             var user = db.Users.Find(User.Identity.GetUserId());
 
-            var bankAccounts = db.BankAccounts.Where(a => a.HouseholdId == user.HouseholdId).Include(b => b.Household);
-            return View(bankAccounts.ToList());
+            var bankAccounts = user.Household.BankAccount.ToList();
+            return View(bankAccounts);
         }
 
         // GET: BankAccounts/Details/5

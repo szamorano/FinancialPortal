@@ -9,20 +9,22 @@ using System.Web.Mvc;
 using FinancialPortal.Models;
 using FinancialPortal.Models.CodeFirst;
 using Microsoft.AspNet.Identity;
+using FinancialPortal.Models.CodeFirst.Helpers;
 
 namespace FinancialPortal.Controllers
 {
+    [AuthorizeHouseholdRequired]
     public class TransactionsController : Universal
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Transactions
         public ActionResult Index()
         {
             var user = db.Users.Find(User.Identity.GetUserId());
             //var transactions = user.Household.BankAccount.SelectMany(t => t.BankAccountTransactions);
-            var transactions = db.Transactions.Where(t => t.AuthorId == user.Id).Include(t => t.Author).Include(t => t.BankAccount).Include(t => t.Category).Include(t => t.TransactionType);
-            return View(transactions.ToList());
+            var transactions = user.Household.BankAccount.SelectMany(a => a.BankAccountTransactions).ToList();
+            //var transactions = db.Transactions.Where(t => t.AuthorId == user.Id).Include(t => t.Author).Include(t => t.BankAccount).Include(t => t.Category).Include(t => t.TransactionType);
+            return View(transactions);
         }
 
         // GET: Transactions/Details/5
@@ -43,8 +45,8 @@ namespace FinancialPortal.Controllers
         // GET: Transactions/Create
         public ActionResult Create()
         {
-            ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName");
-            ViewBag.BankAccountId = new SelectList(db.BankAccounts, "Id", "BankAccountName");
+            var user = db.Users.Find(User.Identity.GetUserId());
+            ViewBag.BankAccountId = new SelectList(user.Household.BankAccount, "Id", "BankAccountName");
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name");
             ViewBag.TransactionTypeId = new SelectList(db.TransactionTypes, "Id", "Type");
             return View();
@@ -57,9 +59,10 @@ namespace FinancialPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Amount,Description,CategoryId,TransactionTypeId,BankAccountId")] Transaction transaction)
         {
+            var user = db.Users.Find(User.Identity.GetUserId());
+
             if (ModelState.IsValid)
             {
-                var user = db.Users.Find(User.Identity.GetUserId());
 
                 transaction.AuthorId = user.Id;
                 transaction.DateCreated = DateTime.Now;
@@ -70,7 +73,8 @@ namespace FinancialPortal.Controllers
 
                 if (transaction.TransactionTypeId == 1)
                 {
-                    bankAccount.BankAccountBalance -= transaction.Amount;
+                    transaction.Amount *= -1;
+                    bankAccount.BankAccountBalance += transaction.Amount;
                 }
                 else
                 {
@@ -81,8 +85,7 @@ namespace FinancialPortal.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", transaction.AuthorId);
-            ViewBag.BankAccountId = new SelectList(db.BankAccounts, "Id", "BankAccountType", transaction.BankAccountId);
+            ViewBag.BankAccountId = new SelectList(user.Household.BankAccount, "Id", "BankAccountType", transaction.BankAccountId);
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", transaction.CategoryId);
             ViewBag.TransactionTypeId = new SelectList(db.TransactionTypes, "Id", "Type", transaction.TransactionTypeId);
             return View(transaction);
@@ -203,8 +206,8 @@ namespace FinancialPortal.Controllers
             return View(transaction);
         }
 
-        // GET: Transactions/Delete/5
-        public ActionResult Delete(int? id)
+        // GET: Transactions/Void/5
+        public ActionResult Void(int? id)
         {
             if (id == null)
             {
@@ -215,7 +218,105 @@ namespace FinancialPortal.Controllers
             {
                 return HttpNotFound();
             }
+
+            if (transaction.Void == true)
+            {
+                return RedirectToAction("Unvoid");
+            }
             return View(transaction);
+        }
+
+        // POST: Transactions/Void/5
+        [HttpPost, ActionName("Void")]
+        [ValidateAntiForgeryToken]
+        public ActionResult VoidConfirmed(int id)
+        {
+            Transaction transaction = db.Transactions.Find(id);
+
+            BankAccount account = db.BankAccounts.Find(transaction.BankAccountId);
+            // REVERSE the transaction but DO NOT REMOVE from database
+            // check type: 1, debit. 2, credit.
+
+            if (transaction.TransactionTypeId == 1)
+            {
+                account.BankAccountBalance += transaction.Amount;
+            }
+            else
+            {
+                account.BankAccountBalance -= transaction.Amount;
+
+
+            }
+
+            // check for account overdraft on  this account's transaction.
+            if (account.BankAccountBalance < 0)
+            {
+                ViewBag.Overdraft = "True";
+            }
+            else
+            {
+                ViewBag.Overdraft = "False";
+            }
+
+            transaction.Void = true;
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+        // GET: Transactions/Unvoid/5
+        public ActionResult Unvoid(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Transaction transaction = db.Transactions.Find(id);
+            if (transaction == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(transaction);
+        }
+
+        // POST: Transactions/UnVoid/5
+        [HttpPost, ActionName("Unvoid")]
+        [ValidateAntiForgeryToken]
+        public ActionResult UnvoidConfirmed(int id)
+        {
+            Transaction transaction = db.Transactions.Find(id);
+
+            BankAccount account = db.BankAccounts.Find(transaction.BankAccountId);
+            // ADD BACK the transaction but DO NOT REMOVE from database
+            // check type: 1, debit. 2, credit.
+
+            if (transaction.TransactionTypeId == 1)
+            {
+                account.BankAccountBalance -= transaction.Amount;
+            }
+            else
+            {
+                account.BankAccountBalance += transaction.Amount;
+
+
+            }
+
+            // check for account overdraft on  this account's transaction.
+            if (account.BankAccountBalance < 0)
+            {
+                ViewBag.Overdraft = "True";
+            }
+            else
+            {
+                ViewBag.Overdraft = "False";
+            }
+
+            transaction.Void = false;
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // POST: Transactions/Delete/5
@@ -230,7 +331,20 @@ namespace FinancialPortal.Controllers
         }
 
 
-
+        // GET: Transactions/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Transaction transaction = db.Transactions.Find(id);
+            if (transaction == null)
+            {
+                return HttpNotFound();
+            }
+            return View(transaction);
+        }
 
 
         protected override void Dispose(bool disposing)

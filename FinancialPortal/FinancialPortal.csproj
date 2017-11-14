@@ -3342,6 +3342,8 @@
     <Content Include="Views\Budgets\Index.cshtml" />
     <Content Include="Views\Households\Leave.cshtml" />
     <Content Include="Views\Shared\_ModernLayout.cshtml" />
+    <Content Include="Views\Transactions\Void.cshtml" />
+    <Content Include="Views\Transactions\Unvoid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
