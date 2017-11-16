@@ -35,19 +35,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.BudgetCategory)
+            @Html.DisplayNameFor(model => model.Category)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.BudgetCategory)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BudgetDuration)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BudgetDuration)
+            @Model.Category.Name
         </dd>
 
         <dt>

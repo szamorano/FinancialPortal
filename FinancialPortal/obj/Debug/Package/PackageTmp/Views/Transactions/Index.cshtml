@@ -40,6 +40,42 @@
 
 @foreach (var item in Model) {
     <tr>
+        @if (item.Void == true)
+        {
+
+        
+        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+            @Html.DisplayFor(modelItem => item.Author.FirstName)
+        </td>
+        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+            @Html.DisplayFor(modelItem => item.BankAccount.BankAccountType)
+        </td>
+        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+            @Html.DisplayFor(modelItem => item.Category.Name)
+        </td>
+        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+            @Html.DisplayFor(modelItem => item.TransactionType.Type)
+        </td>
+        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+            @Html.DisplayFor(modelItem => item.DateCreated)
+        </td>
+        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+            @Html.DisplayFor(modelItem => item.Void)
+        </td>
+        }
+        else
+        {
+
+        
+
+
+
         <td>
             @Html.DisplayFor(modelItem => item.Author.FirstName)
         </td>
@@ -64,10 +100,11 @@
         <td>
             @Html.DisplayFor(modelItem => item.Void)
         </td>
+        }
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Void", "Void", new { id=item.Id })
         </td>
     </tr>
 }

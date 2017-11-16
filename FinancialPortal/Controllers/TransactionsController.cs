@@ -64,6 +64,8 @@ namespace FinancialPortal.Controllers
             if (ModelState.IsValid)
             {
 
+                var household = user.Household;
+                var updated = false;
                 transaction.AuthorId = user.Id;
                 transaction.DateCreated = DateTime.Now;
                 transaction.Void = false;
@@ -71,94 +73,67 @@ namespace FinancialPortal.Controllers
 
                 BankAccount bankAccount = db.BankAccounts.Find(transaction.BankAccountId);
 
+
                 if (transaction.TransactionTypeId == 1)
                 {
-                    transaction.Amount *= -1;
-                    bankAccount.BankAccountBalance += transaction.Amount;
+                    bankAccount.BankAccountBalance -= transaction.Amount;
+                    updated = true;
                 }
-                else
+                else if (transaction.TransactionTypeId == 2)
                 {
                     bankAccount.BankAccountBalance += transaction.Amount;
+                    updated = true;
                 }
                 db.SaveChanges();
+                if (updated == true && bankAccount.Household != null)
+                {
+                    if (bankAccount.BankAccountBalance == 0)
+                    {
+                        foreach (var u in household.HouseholdMember)
+                        {
+                            Notification n = new Notification();
+                            n.UserId = bankAccount.HouseholdId.ToString();
+                            n.Date = DateTime.Now;
+                            n.BankAccountId = bankAccount.Id;
+                            n.Type = "Zero Dollars";
+                            n.Description = "Your account: " + bankAccount.BankAccountName + " has reached an amount of zero.";
+                            db.Notifications.Add(n);
+                            db.SaveChanges();
+                        }
+                    }
 
+
+                    else if (bankAccount.BankAccountBalance < 0)
+                    {
+                        foreach (var u in household.HouseholdMember)
+                        {
+                            Notification n = new Notification();
+                            n.HouseholdId = household.Id;
+                            n.UserId = u.Id;
+                            n.Date = DateTime.Now;
+                            n.BankAccountId = bankAccount.Id;
+                            n.Type = "Over Draft";
+                            n.Description = "Your account: " + bankAccount.BankAccountName + " has reached a negative amount.";
+                            db.Notifications.Add(n);
+                            db.SaveChanges();
+                        }
+                    }
+
+                    bankAccount.Open = DateTime.Now;
+                    db.SaveChanges();
+
+                }
                 return RedirectToAction("Index");
             }
 
-            ViewBag.BankAccountId = new SelectList(user.Household.BankAccount, "Id", "BankAccountType", transaction.BankAccountId);
+            ViewBag.AccountId = new SelectList(db.BankAccounts, "Id", "Name", transaction.Id);
+            ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", transaction.AuthorId);
             ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", transaction.CategoryId);
             ViewBag.TransactionTypeId = new SelectList(db.TransactionTypes, "Id", "Type", transaction.TransactionTypeId);
             return View(transaction);
 
 
-            //    var user = db.Users.Find(User.Identity.GetUserId());
-            //    var household = user.Household;
-            //    var updated = false;
-            //    transaction.AuthorId = user.Id;
-            //    transaction.DateCreated = DateTime.Now;
-            //    transaction.Void = false;
-            //    db.Transactions.Add(transaction);
 
-            //    BankAccount bankAccount = db.BankAccounts.Find(transaction.BankAccountId);
-
-
-            //    if (transaction.TransactionTypeId == 1)
-            //    {
-            //        bankAccount.BankAccountBalance -= transaction.Amount;
-            //        updated = true;
-            //    }
-            //    else if (transaction.TransactionTypeId == 2)
-            //    {
-            //        bankAccount.BankAccountBalance += transaction.Amount;
-            //        updated = true;
-            //    }
-            //    db.SaveChanges();
-            //    if (updated == true && bankAccount.Household != null)
-            //    {
-            //        if (bankAccount.BankAccountBalance == 0)
-            //        {
-            //            foreach (var u in household.HouseholdMember)
-            //            {
-            //                Notification n = new Notification();
-            //                n.UserId = bankAccount.HouseholdId.ToString();
-            //                n.Date = DateTime.Now;
-            //                n.BankAccountId = bankAccount.Id;
-            //                n.Type = "Zero Dollars";
-            //                n.Description = "Your account: " + bankAccount.BankAccountName + " has reached an amount of zero.";
-            //                db.Notifications.Add(n);
-            //                db.SaveChanges();
-            //            }
-            //        }
-
-
-            //        else if (bankAccount.BankAccountBalance < 0)
-            //        {
-            //            foreach (var u in household.HouseholdMember)
-            //            {
-            //                Notification n = new Notification();
-            //                n.UserId = u.Id;
-            //                n.Date = DateTime.Now;
-            //                n.BankAccountId = bankAccount.Id;
-            //                n.Type = "Over Draft";
-            //                n.Description = "Your account: " + bankAccount.BankAccountName + " has reached a negative amount.";
-            //                db.Notifications.Add(n);
-            //                db.SaveChanges();
-            //            }
-            //        }
-
-            //        bankAccount.Open = DateTime.Now;
-            //        db.SaveChanges();
-
-            //    }
-            //    return RedirectToAction("Index");
-            //}
-
-            //ViewBag.AccountId = new SelectList(db.BankAccounts, "Id", "Name", transaction.Id);
-            //ViewBag.AccountTypeId = new SelectList(db.AccountTypes, "Id", "Name", transaction.AccountTypeId);
-            //ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", transaction.AuthorId);
-            //ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Name", transaction.CategoryId);
-            //ViewBag.TransactionTypeId = new SelectList(db.TransactionTypes, "Id", "Type", transaction.TransactionTypeId);
-            //return View(transaction);
 
 
 
@@ -167,8 +142,8 @@ namespace FinancialPortal.Controllers
 
         }
 
-        // GET: Transactions/Edit/5
-        public ActionResult Edit(int? id)
+            // GET: Transactions/Edit/5
+            public ActionResult Edit(int? id)
         {
             if (id == null)
             {

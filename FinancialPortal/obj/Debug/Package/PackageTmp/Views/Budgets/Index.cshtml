@@ -21,20 +21,20 @@
             @Html.DisplayNameFor(model => model.StartAmount)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.BudgetCategory)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BudgetDuration)
+            @Html.DisplayNameFor(model => model.Category)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.BudgetName)
         </th>
-
         <th>
-            Budget Amount
+            Spent Amount
         </th>
-
-        <th></th>
+        <th>
+            Percentage
+        </th>
+        <th>
+            Action
+        </th>
     </tr>
 
 @foreach (var item in Model) {
@@ -49,19 +49,23 @@
             @Html.DisplayFor(modelItem => item.StartAmount)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.BudgetCategory)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BudgetDuration)
+            @Html.DisplayFor(modelItem => item.Category.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.BudgetName)
         </td>
-
         <td>
-            @if (item.B)
+            @if (item.SpentAmount != null)
+            {
+                @item.SpentAmount
+            }
         </td>
-
+        <td>
+            @if (item.BudgetPercentage != null)
+            {
+                @item.BudgetPercentage <span> %</span>
+            }
+        </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |
