@@ -21,6 +21,13 @@ namespace FinancialPortal.Controllers
         //[AuthorizeHouseholdRequired]
         public ActionResult Index()
         {
+            var user = db.Users.Find(User.Identity.GetUserId());
+            
+            if (user.Household != null)
+            {
+                var transactions = user.Household.BankAccount.SelectMany(a => a.BankAccountTransactions).ToList();
+                return View(transactions);
+            }
             return View();
         }
 

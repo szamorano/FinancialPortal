@@ -85,6 +85,7 @@ namespace FinancialPortal.Controllers
                     updated = true;
                 }
                 db.SaveChanges();
+
                 if (updated == true && bankAccount.Household != null)
                 {
                     if (bankAccount.BankAccountBalance == 0)

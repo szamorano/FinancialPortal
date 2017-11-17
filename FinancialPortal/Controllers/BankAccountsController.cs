@@ -44,7 +44,6 @@ namespace FinancialPortal.Controllers
         // GET: BankAccounts/Create
         public ActionResult Create()
         {
-            ViewBag.HouseholdId = new SelectList(db.Households, "Id", "HouseholdName");
             return View();
         }
 
@@ -67,7 +66,6 @@ namespace FinancialPortal.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.HouseholdId = new SelectList(db.Households, "Id", "HouseholdName", bankAccount.HouseholdId);
             return View(bankAccount);
         }
 

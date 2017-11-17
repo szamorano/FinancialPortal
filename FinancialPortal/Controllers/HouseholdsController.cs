@@ -17,10 +17,8 @@ using System.Configuration;
 namespace FinancialPortal.Controllers
 {
     [Authorize]
-    public class HouseholdsController : Controller
+    public class HouseholdsController : Universal
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-
         // GET: Households
         [AuthorizeHouseholdRequired]
         public ActionResult Index(int? id)

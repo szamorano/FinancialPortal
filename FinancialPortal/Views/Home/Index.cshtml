@@ -1,31 +1,139 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model IEnumerable<FinancialPortal.Models.CodeFirst.Transaction>
+
+@{
+    ViewBag.Title = "Index";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<div id="main-wrapper">
+
+
+    <h2>Index</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    @if (Model != null)
+    {
+        <div class="panel panel-dark">
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title">Basic example</h4>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table id="MyTable" class="display table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Author.FirstName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.BankAccount.BankAccountType)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Category.Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TransactionType.Type)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Amount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DateCreated)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Void)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    @if (item.Void == true)
+                                    {
+                                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                                            @Html.DisplayFor(modelItem => item.Author.FirstName)
+                                        </td>
+                                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                                            @Html.DisplayFor(modelItem => item.BankAccount.BankAccountType)
+                                        </td>
+                                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                                            @Html.DisplayFor(modelItem => item.Category.Name)
+                                        </td>
+                                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                                            @Html.DisplayFor(modelItem => item.TransactionType.Type)
+                                        </td>
+                                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                                            @Html.DisplayFor(modelItem => item.Amount)
+                                        </td>
+                                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                                            @Html.DisplayFor(modelItem => item.DateCreated)
+                                        </td>
+                                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                                            @Html.DisplayFor(modelItem => item.Void)
+                                        </td>
+                                    }
+                                    else
+                                    {
+
+
+
+
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Author.FirstName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.BankAccount.BankAccountType)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Category.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TransactionType.Type)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Amount)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.DateCreated)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Void)
+                                        </td>
+                                    }
+                                    <td>
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                                        @Html.ActionLink("Void", "Void", new { id = item.Id })
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+
+
+@section scripts{
+    <script src="~/admin3/assets/plugins/datatables/js/jquery.datatables.min.js"></script>
+    <script>
+        $("#MyTable").DataTable();
+    </script>
+}

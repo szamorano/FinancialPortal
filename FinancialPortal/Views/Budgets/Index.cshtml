@@ -4,74 +4,106 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Frequency.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Household.HouseholdName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Category)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BudgetName)
-        </th>
-        <th>
-            Spent Amount
-        </th>
-        <th>
-            Percentage
-        </th>
-        <th>
-            Action
-        </th>
-    </tr>
+<link href="~/admin3/assets/plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css" />
+<link href="~/admin3/assets/plugins/datatables/css/jquery.datatables_themeroller.css" rel="stylesheet" type="text/css" />
+<link href="~/admin3/assets/plugins/x-editable/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" type="text/css">
+<link href="~/admin3/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" />
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Frequency.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Household.HouseholdName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartAmount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BudgetName)
-        </td>
-        <td>
-            @if (item.SpentAmount != null)
+
+
+<div id="main-wrapper">
+
+
+    <h2>Index</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table id="MyTable" class="display table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Frequency.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Household.HouseholdName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BudgetName)
+                </th>
+                <th>
+                    Spent Amount
+                </th>
+                <th>
+                    Percentage
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
             {
-                @item.SpentAmount
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Frequency.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Household.HouseholdName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BudgetName)
+                    </td>
+                    <td>
+                        @if (item.SpentAmount != null)
+                        {
+                            @item.SpentAmount
+                        }
+                    </td>
+                    <td>
+                        @if (item.BudgetPercentage != null)
+                        {
+                            @item.BudgetPercentage <span> %</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
             }
-        </td>
-        <td>
-            @if (item.BudgetPercentage != null)
-            {
-                @item.BudgetPercentage <span> %</span>
-            }
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+
+@section scripts{
+    <script src="~/admin3/assets/plugins/jquery-mockjax-master/jquery.mockjax.js"></script>
+    <script src="~/admin3/assets/plugins/moment/moment.js"></script>
+    <script src="~/admin3/assets/plugins/datatables/js/jquery.datatables.min.js"></script>
+    <script src="~/admin3/assets/plugins/x-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>
+    <script src="~/admin3/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/admin3/assets/js/modern.min.js"></script>
+    <script src="~/admin3/assets/js/pages/table-data.js"></script>
+
+    <script>
+        $("#MyTable").DataTable();
+    </script>
 }
-
-</table>

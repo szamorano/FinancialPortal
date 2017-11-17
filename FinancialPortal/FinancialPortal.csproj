@@ -3344,6 +3344,8 @@
     <Content Include="Views\Shared\_ModernLayout.cshtml" />
     <Content Include="Views\Transactions\Void.cshtml" />
     <Content Include="Views\Transactions\Unvoid.cshtml" />
+    <Content Include="Views\BankAccounts\Index - Copy.cshtml" />
+    <Content Include="Views\Account\Register - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

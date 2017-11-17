@@ -220,33 +220,34 @@
                                 <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
                                     <li><p class="drop-title">You have @ViewBag.Notifications.Count pending notifications!</p></li>
                                     <li class="dropdown-menu-list slimscroll tasks">
-                                        @foreach (var notifications in ViewBag.Notifications)
+                                        <ul class="list-unstyled">
+                                        @foreach (var item in ViewBag.Notifications)
                                         {
 
-                                        <li><a href="@Url.Action("DeleteNotification", "Tickets", new { id = notifications.Id } )"><span class="details"><i class="bg-blue icon_plus_alt2"></i> @notifications.Description</span><span class="time-badge">@notifications.Created</span></a></li>
-                                        }
-                                        <ul class="list-unstyled">
+                                        
                                             <li>
-                                                <a href="#">
-                                                    <div class="task-icon badge badge-success"><i class="icon-user"></i></div>
-                                                    <span class="badge badge-roundless badge-default pull-right">1min ago</span>
-                                                    <p class="task-details">New user registered.</p>
+                                        <a href="@Url.Action("Index", "BankAccounts", new { id = item.BankAccountId } )">
+                                                
+                                                    <strong>@item.Type</strong>
+                                                    <span class="badge badge-roundless badge-default pull-right">@item.Date</span>
+                                                    <p class="task-details">@item.Description</p>
                                                 </a>
                                             </li>
-                                            <li>
+                                            }
+                                            @*<li>
                                                 <a href="#">
                                                     <div class="task-icon badge badge-danger"><i class="icon-energy"></i></div>
                                                     <span class="badge badge-roundless badge-default pull-right">24min ago</span>
                                                     <p class="task-details">Database error.</p>
                                                 </a>
-                                            </li>
-                                            <li>
+                                            </li>*@
+                                            @*<li>
                                                 <a href="#">
                                                     <div class="task-icon badge badge-info"><i class="icon-heart"></i></div>
                                                     <span class="badge badge-roundless badge-default pull-right">1h ago</span>
                                                     <p class="task-details">Reached 24k likes</p>
                                                 </a>
-                                            </li>
+                                            </li>*@
                                         </ul>
                                     </li>
                                     <li class="drop-all"><a href="#" class="text-center">All Tasks</a></li>
@@ -296,11 +297,11 @@
                 </div>
                 <ul class="menu accordion-menu">
                     <li><a href="@Url.Action("Index", "Home", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-map-marker"></span><p>Dashboard</p></a></li>                  
-                    <li><a href="@Url.Action("ProfilePage", "Admin", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
+                    @*<li><a href="@Url.Action("ProfilePage", "Admin", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>*@
                     <li><a href="@Url.Action("Index", "Households", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-home"></span><p>Households</p></a></li>
                     <li><a href="@Url.Action("Index", "BankAccounts", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-briefcase"></span><p>Bank Accounts</p></a></li>
                     <li><a href="@Url.Action("Index", "Transactions", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Transactions</p></a></li>
-                        
+                    <li><a href="@Url.Action("Index", "Budgets", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-gift"></span><p>Budgets</p></a></li>
                 </ul>
             </div><!-- Page Sidebar Inner -->
         </div><!-- Page Sidebar -->
@@ -309,11 +310,10 @@
                 <h3>Dashboard</h3>
                 <div class="page-breadcrumb">
                     <ol class="breadcrumb">
-                        <li><a href="index.html">Home</a></li>
                         <li class="active">Dashboard</li>
                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        @*<li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                         @if (ViewBag.userHID != null)
                         {
                             <li>@Html.ActionLink("Household", "Index", "Households", new { id = ViewBag.userHID }, null)</li>
@@ -324,7 +324,7 @@
                         }
                         <li>@Html.ActionLink("Bank Accounts", "Index", "BankAccounts")</li>
                         <li>@Html.ActionLink("Transactions", "Index", "Transactions")</li>
-
+                        <li>@Html.ActionLink("Budgets", "Index", "Budgets")</li>
                         </ul>
                         @Html.Partial("_LoginPartial")
                     </ol>
@@ -422,6 +422,6 @@
     <script src="~/admin3/assets/plugins/metrojs/MetroJs.min.js"></script>
     <script src="~/admin3/assets/js/modern.min.js"></script>
     <script src="~/admin3/assets/js/pages/dashboard.js"></script>
-
+    @RenderSection("scripts", required: false)
 </body>
 </html>
