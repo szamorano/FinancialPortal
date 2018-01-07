@@ -78,8 +78,22 @@
                                 @*<a href="register.html" class="btn btn-default btn-block m-t-md">Create an account</a>*@
                             }
                             @*</form>*@
-                            <p class="text-center m-t-xs text-sm">2017 &copy; Financial Portal.</p>
-                        </div>
+                            <p class="text-center m-t-xs text-sm">2017 &copy; Steven Zamorano | Money Manager.</p>
+
+                            <div class="text-center">
+
+                                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input name="Email" value="guest@moneymanager.com" hidden />
+                                    <input name="Password" value="Password1!" hidden />
+
+                                    <input type="submit" class="btn btn-dark btn-lg" value="Guest Demo" />
+                                }
+
+                            </div>
+
+                            </div>
                     </div>
                 </div><!-- Row -->
             </div><!-- Main Wrapper -->

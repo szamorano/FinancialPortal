@@ -7,11 +7,12 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FinancialPortal.Models;
+using FinancialPortal.Models.CodeFirst;
 
 namespace FinancialPortal.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : Universal
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;

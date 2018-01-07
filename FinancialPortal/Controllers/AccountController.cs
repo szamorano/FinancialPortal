@@ -197,7 +197,7 @@ namespace FinancialPortal.Controllers
                     image.SaveAs(Path.Combine(Server.MapPath("~/ProfilePics/"), fileName + Path.GetExtension(image.FileName)));
                 }
 
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, HouseholdId = model.HouseholdId, FirstName=model.FirstName, LastName=model.LastName };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, HouseholdId = model.HouseholdId, FirstName=model.FirstName, LastName=model.LastName, ProfilePic = pPic };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

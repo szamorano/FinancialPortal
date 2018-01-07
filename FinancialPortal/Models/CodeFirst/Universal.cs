@@ -13,6 +13,7 @@ namespace FinancialPortal.Models.CodeFirst
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            //if nobody's logged in none of the viewbags will be sent and if you use count they will have errors because count method provides int which is value type so you need to have an error handling for the if statement with elseOK
             if (User.Identity.IsAuthenticated)
             {
                 var user = db.Users.Find(User.Identity.GetUserId());
@@ -22,6 +23,7 @@ namespace FinancialPortal.Models.CodeFirst
                 ViewBag.FullName = user.FullName;
                 ViewBag.ProfilePic = user.ProfilePic;
                 ViewBag.Notifications = user.Notifications.ToList();
+                ViewBag.EmailAddress = user.Email;
 
                 if (user.HouseholdId == null)
                 {

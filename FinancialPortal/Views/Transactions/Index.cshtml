@@ -5,10 +5,7 @@
 }
 
 
-<link href="~/admin3/assets/plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css" />
-<link href="~/admin3/assets/plugins/datatables/css/jquery.datatables_themeroller.css" rel="stylesheet" type="text/css" />
-<link href="~/admin3/assets/plugins/x-editable/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" type="text/css">
-<link href="~/admin3/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" />
+
 
 
 
@@ -20,68 +17,79 @@
     <p>
         @Html.ActionLink("Create New", "Create")
     </p>
-    <table id="MyTable" class="display table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Author.FirstName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.BankAccount.BankAccountType)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Category.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.TransactionType.Type)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Amount)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateCreated)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Void)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
+    @if (Model != null)
+    {
+        <div class="panel panel-dark">
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title">Transactions</h4>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+
+
+
+                    <table id="MyTable" class="display table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Author.FirstName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.BankAccount.BankAccountType)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Category.Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TransactionType.Type)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Amount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.DateCreated)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Void)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
             {
-                <tr>
-                    @if (item.Void == true)
+                            <tr>
+                                @if (item.Void == true)
                 {
 
 
-                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
-                            @Html.DisplayFor(modelItem => item.Author.FirstName)
-                        </td>
-                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
-                            @Html.DisplayFor(modelItem => item.BankAccount.BankAccountType)
-                        </td>
-                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
-                            @Html.DisplayFor(modelItem => item.Category.Name)
-                        </td>
-                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
-                            @Html.DisplayFor(modelItem => item.TransactionType.Type)
-                        </td>
-                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
-                            @Html.DisplayFor(modelItem => item.Amount)
-                        </td>
-                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
-                            @Html.DisplayFor(modelItem => item.DateCreated)
-                        </td>
-                        <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
-                            @Html.DisplayFor(modelItem => item.Void)
-                        </td>
+                <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                    @Html.DisplayFor(modelItem => item.Author.FirstName)
+                </td>
+                <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                    @Html.DisplayFor(modelItem => item.BankAccount.BankAccountType)
+                </td>
+                <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                    @Html.DisplayFor(modelItem => item.TransactionType.Type)
+                </td>
+                <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                    @Html.DisplayFor(modelItem => item.DateCreated)
+                </td>
+                <td style="text-decoration:line-through; font-style:italic; color:dimgray;">
+                    @Html.DisplayFor(modelItem => item.Void)
+                </td>
                     }
                     else
                     {
@@ -90,54 +98,54 @@
 
 
 
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Author.FirstName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BankAccount.BankAccountType)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Category.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TransactionType.Type)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Amount)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DateCreated)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Void)
-                        </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BankAccount.BankAccountType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TransactionType.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Void)
+                </td>
                     }
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                        @Html.ActionLink("Void", "Void", new { id = item.Id })
-                    </td>
-                </tr>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                                    @Html.ActionLink("Void", "Void", new { id = item.Id })
+                                </td>
+                            </tr>
             }
 
-        </tbody>
-    </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 
 
-@section scripts{
-    <script src="~/admin3/assets/plugins/jquery-mockjax-master/jquery.mockjax.js"></script>
-    <script src="~/admin3/assets/plugins/moment/moment.js"></script>
-    <script src="~/admin3/assets/plugins/datatables/js/jquery.datatables.min.js"></script>
-    <script src="~/admin3/assets/plugins/x-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>
-    <script src="~/admin3/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script src="~/admin3/assets/js/modern.min.js"></script>
-    <script src="~/admin3/assets/js/pages/table-data.js"></script>
 
+
+
+@section scripts{
+    <script src="~/admin3/assets/plugins/datatables/js/jquery.datatables.min.js"></script>
     <script>
         $("#MyTable").DataTable();
     </script>

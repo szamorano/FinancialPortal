@@ -45,6 +45,12 @@ namespace FinancialPortal.Controllers
             return View();
         }
 
+        public ActionResult ProfilePage()
+        {
+            ViewBag.Message = "Your Profile page.";
+
+            return View();
+        }
 
 
 

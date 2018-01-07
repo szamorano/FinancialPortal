@@ -4,91 +4,141 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<link href="~/morris.js-0.5.1/morris.js-0.5.1/morris.css" rel="stylesheet" />
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+   @if (Model.BankAccount.Count != 0)
+   {
+    <div id="main-wrapper">
 
-<h2>@Model.HouseholdName</h2>
+        <h2>Index</h2>
+
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+
+        <h2>@Model.HouseholdName</h2>
 
 
-@foreach (var member in Model.HouseholdMember)
+        @foreach (var member in Model.HouseholdMember)
+        {
+            <p>@member.FullName</p>
+        }
+
+
+
+       
+       <h2>Test Chart</h2>
+        <div id="SampleChart" style="height: 245px;"></div>
+        <div class="widget-chart text-center">
+            <ul class="list-inline chart-detail-list m-b-0">
+                <li>
+                    <h5 style="color: brown;"><i class="fa fa-circle m-r-5"></i>Income</h5>
+                </li>
+                <li>
+                    <h5 style="color: green;"><i class="fa fa-circle m-r-5"></i>Expense</h5>
+                </li>
+            </ul>
+        </div>
+
+
+
+
+        @*@if (Model.BankAccount.Count() == 0)
+            {
+                <p>Before viewing information associated with your household, you must create an account href="@Url.Action("Create", "Accounts")".</p>
+            }
+            else
+            {
+                if (Model.BankAccount.SelectMany(a => a.BankAccountTransactions).Count() == 0)
+                {
+                    <p>One last step: click the "new transaction" button to add a transaction.</p>
+                }
+                else
+                {
+                    <h2>MY HOUSEHOLD</h2><hr />
+
+                    <h3>@Model.HouseholdName</h3>
+
+
+
+
+
+
+
+
+
+
+                }
+            }*@
+
+
+
+
+
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.HouseholdName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HouseholdDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HouseholdCreatedDate)
+                </th>
+                <th></th>
+            </tr>
+
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.HouseholdName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.HouseholdDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.HouseholdCreatedDate)
+                </td>
+                <td>
+                    @Html.ActionLink("Bank Accounts", "Index", "BankAccounts") |
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = Model.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
+                </td>
+            </tr>
+
+
+        </table>
+
+
+        @Html.ActionLink("Invite To Join", "InviteToJoin", "Households") |
+        @Html.ActionLink("Leave Household", "LeaveHousehold", "Households")
+
+    </div>
+
+   }
+   else
+   {
+    <p>Before viewing information associated with your household, you must create an account</p> <a href="@Url.Action("Create", "BankAccounts")">Create an Account</a>
+   }
+
+@section scripts
 {
-    <p>@member.FullName</p>
+<script src="~/morris.js-0.5.1/morris.js-0.5.1/morris.min.js"></script>
+<script src="~/assets/plugins/morris/morris.min.js"></script>
+@*<script src="~/assets/plugins/raphael/raphael-min.js"></script>*@
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    
+
+<script>
+Morris.Donut({
+element: 'SampleChart',
+data: [
+{label: "Income", value: @ViewBag.TotalIncome},
+{label: "Expense", value: @ViewBag.TotalExpense},
+]
+});
+</script>
 }
-
-
-
-@*@if (Model.BankAccount.Count() == 0)
-{
-    <p>Before viewing information associated with your household, you must create an account href="@Url.Action("Create", "Accounts")".</p>
-}
-else
-{
-    if (Model.BankAccount.SelectMany(a => a.BankAccountTransactions).Count() == 0)
-    {
-        <p>One last step: click the "new transaction" button to add a transaction.</p>
-    }
-    else
-    {
-        <h2>MY HOUSEHOLD</h2><hr />
-       
-        <h3>@Model.HouseholdName</h3>
-
-
-
-
-
-
-
-
-
-
-    }
-}*@
-
-
-
-
-
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.HouseholdName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HouseholdDescription)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HouseholdCreatedDate)
-        </th>
-        <th></th>
-    </tr>
-
-
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => Model.HouseholdName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => Model.HouseholdDescription)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => Model.HouseholdCreatedDate)
-        </td>
-        <td>
-            @Html.ActionLink("Bank Accounts", "Index", "BankAccounts") |
-            @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=Model.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=Model.Id })
-        </td>
-    </tr>
-
-
-</table>
-
-
-@Html.ActionLink("Invite To Join", "InviteToJoin", "Households") | 
-@Html.ActionLink("Leave Household", "LeaveHousehold", "Households")

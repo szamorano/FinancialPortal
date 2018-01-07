@@ -37,9 +37,9 @@ namespace FinancialPortal.Models.CodeFirst
                         var nextMonday = DateTime.Now.Next(DayOfWeek.Monday);
                         foreach (var trans in Category.Transactions.Where(t => t.BankAccount.HouseholdId == HouseholdId && t.DateCreated > previousSunday && t.DateCreated < nextMonday && t.Void == false).ToList())
                         {
-                            amount -= trans.Amount;
+                            amount += trans.Amount;
                         }
-                        return amount;
+                        return Math.Abs(amount);
 
                     }
 
@@ -48,17 +48,17 @@ namespace FinancialPortal.Models.CodeFirst
                     {
                         foreach (var trans in Category.Transactions.Where(t => t.BankAccount.HouseholdId == HouseholdId && t.DateCreated.Month == DateTime.Now.Month && t.DateCreated.Year == DateTime.Now.Year && t.Void == false).ToList())
                         {
-                            amount -= trans.Amount;
+                            amount += trans.Amount;
                         }
-                        return amount;
+                        return Math.Abs(amount);
                     }
                     else if (Frequency.Name == "Yearly")
                     {
                         foreach (var trans in Category.Transactions.Where(t => t.BankAccount.HouseholdId == HouseholdId && t.DateCreated.Year == DateTime.Now.Year && t.Void == false).ToList())
                         {
-                            amount -= trans.Amount;
+                            amount += trans.Amount;
                         }
-                        return amount;
+                        return Math.Abs(amount);
                     }
                     else
                     {

@@ -24,6 +24,8 @@
     <link href="~/admin3/assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css" />
     <link href="~/admin3/assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css" />
     <link href="~/admin3/assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css" />
+    <link href="~/admin3/assets/plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/admin3/assets/plugins/datatables/css/jquery.datatables_themeroller.css" rel="stylesheet" type="text/css" />	
     <link href="~/admin3/assets/plugins/weather-icons-master/css/weather-icons.min.css" rel="stylesheet" type="text/css" />
     <link href="~/admin3/assets/plugins/metrojs/MetroJs.min.css" rel="stylesheet" type="text/css" />
     <link href="~/admin3/assets/plugins/toastr/toastr.min.css" rel="stylesheet" type="text/css" />
@@ -107,6 +109,8 @@
             </form>
         </div>
     </nav>
+@if (Request.IsAuthenticated)
+{
     <div class="menu-wrap">
         <nav class="profile-menu">
             <div class="profile"><img src="@ViewBag.ProfilePic" width="60" /><span>@ViewBag.FullName</span></div>
@@ -121,6 +125,25 @@
             </span>
         </div><!-- Input Group -->
     </form><!-- Search Form -->
+}
+else
+{
+    <!--replace all the viewbags with some default hardcoded values do the same for other viewbags. you got it? I need to take my kids out now OK Thanks Mark no problem-->
+    <div class="menu-wrap">
+        <nav class="profile-menu">
+            <div class="profile"><img src="@ViewBag.ProfilePic" width="60" /><span>@ViewBag.FullName</span></div>
+        </nav>
+        <button class="close-button" id="close-button">Close Menu</button>
+    </div>
+    <form class="search-form" action="#" method="GET">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control search-input" placeholder="Search...">
+            <span class="input-group-btn">
+                <button class="btn btn-default close-search waves-effect waves-button waves-classic" type="button"><i class="fa fa-times"></i></button>
+            </span>
+        </div><!-- Input Group -->
+    </form><!-- Search Form -->
+}
     <main class="page-content content-wrap">
         <div class="navbar">
             <div class="navbar-inner">
@@ -148,9 +171,9 @@
                                 <a href="javascript:void(0);" class="waves-effect waves-button waves-classic toggle-fullscreen"><i class="fa fa-expand"></i></a>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown">
+                                @*<a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown">
                                     <i class="fa fa-cogs"></i>
-                                </a>
+                                </a>*@
                                 <ul class="dropdown-menu dropdown-md dropdown-list theme-settings" role="menu">
                                     <li class="li-group">
                                         <ul class="list-unstyled">
@@ -214,7 +237,7 @@
                             <li>
                                 @*<a href="javascript:void(0);" class="waves-effect waves-button waves-classic show-search"><i class="fa fa-search"></i></a>*@
                             </li>
-
+                        <!-- show me all the errors and also show me where the data is originating-->
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-bell"></i><span class="badge badge-danger pull-right">@ViewBag.Notifications.Count</span></a>
                                 <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
@@ -259,11 +282,11 @@
                                 <img class="img-circle avatar" src=@ViewBag.ProfilePic width="40" height="40" alt="">
                             </a>
                             <ul class="dropdown-menu dropdown-list" role="menu">
-                                <li role="presentation"><a href="@Url.Action("ProfilePage", "Admin", new { @class = "" })"><i class="fa fa-user"></i>Profile</a></li>
+                                <li role="presentation"><a href="@Url.Action("ProfilePage", "Home", new { @class = "" })"><i class="fa fa-user"></i>Profile</a></li>
                                 @*<li role="presentation"><a href="calendar.html"><i class="fa fa-calendar"></i>Calendar</a></li>
                 <li role="presentation"><a href="inbox.html"><i class="fa fa-envelope"></i>Inbox<span class="badge badge-success pull-right">4</span></a></li>*@
                                 <li role="presentation" class="divider"></li>
-                                <li role="presentation"><a href="lock-screen.html"><i class="fa fa-lock"></i>Lock screen</a></li>
+                                @*<li role="presentation"><a href="lock-screen.html"><i class="fa fa-lock"></i>Lock screen</a></li>*@
                                 @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                                 {
                                     @Html.AntiForgeryToken()
@@ -296,12 +319,12 @@
                     </div>
                 </div>
                 <ul class="menu accordion-menu">
-                    <li><a href="@Url.Action("Index", "Home", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-map-marker"></span><p>Dashboard</p></a></li>                  
-                    @*<li><a href="@Url.Action("ProfilePage", "Admin", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>*@
-                    <li><a href="@Url.Action("Index", "Households", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-home"></span><p>Households</p></a></li>
-                    <li><a href="@Url.Action("Index", "BankAccounts", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-briefcase"></span><p>Bank Accounts</p></a></li>
-                    <li><a href="@Url.Action("Index", "Transactions", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Transactions</p></a></li>
-                    <li><a href="@Url.Action("Index", "Budgets", new { @class = "waves-effect waves-button" })"><span class="menu-icon glyphicon glyphicon-gift"></span><p>Budgets</p></a></li>
+                    <li><a href="@Url.Action("Index", "Home")" class = "waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-map-marker"></span><p>Dashboard</p></a></li>                  
+                    <li><a href="@Url.Action("ProfilePage", "Home")" class = "waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li>
+                    <li><a href="@Url.Action("Index", "Households")" class = "waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Households</p></a></li>
+                    <li><a href="@Url.Action("Index", "BankAccounts")" class = "waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-briefcase"></span><p>Bank Accounts</p></a></li>
+                    <li><a href="@Url.Action("Index", "Transactions")" class = "waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Transactions</p></a></li>
+                    <li><a href="@Url.Action("Index", "Budgets")" class = "waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-gift"></span><p>Budgets</p></a></li>
                 </ul>
             </div><!-- Page Sidebar Inner -->
         </div><!-- Page Sidebar -->
@@ -326,7 +349,7 @@
                         <li>@Html.ActionLink("Transactions", "Index", "Transactions")</li>
                         <li>@Html.ActionLink("Budgets", "Index", "Budgets")</li>
                         </ul>
-                        @Html.Partial("_LoginPartial")
+                        @*@Html.Partial("_LoginPartial")*@
                     </ol>
                 </div>
             </div>
@@ -335,10 +358,11 @@
             @RenderBody()
 
             <div class="page-footer">
-                <p class="no-s">2017 &copy; Steven Zamorano | Financial Portal.</p>
+                <p class="no-s">2017 &copy; Steven Zamorano | Money Manager.</p>
             </div>
         </div><!-- Page Inner -->
     </main><!-- Page Content -->
+
     <nav class="cd-nav-container" id="cd-nav">
         <header>
             <h3>Navigation</h3>

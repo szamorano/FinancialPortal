@@ -23,6 +23,9 @@ namespace FinancialPortal.Controllers
         [AuthorizeHouseholdRequired]
         public ActionResult Index(int? id)
         {
+            var user = db.Users.Find(User.Identity.GetUserId());
+            ViewBag.TotalIncome = user.Household.BankAccount.SelectMany(a => a.BankAccountTransactions.Where(t => t.Void == false && t.Amount > 0)).Sum(t => t.Amount);
+            ViewBag.TotalExpense = Math.Abs(user.Household.BankAccount.SelectMany(a => a.BankAccountTransactions.Where(t => t.Void == false && t.Amount < 0)).Sum(t => t.Amount));
             //var user = db.Users.Find(User.Identity.GetUserId());
             //return View(db.Households.FirstOrDefault(h => h.Id == user.HouseholdId));
             var household = db.Households.Find(id);

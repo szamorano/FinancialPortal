@@ -1,0 +1,62 @@
+﻿@model FinancialPortal.Models.ViewModels.UserProfileViewModel
+
+<!-- Title -->
+<title>Modern | Profile</title>
+
+<div class="page-inner">
+    <div class="profile-cover">
+        <div class="row">
+            <div class="col-md-3 profile-image">
+                <div class="profile-image-container">
+                    @*@Html.DisplayFor(model => model.user.ProfilePic)*@
+                    <img src="@ViewBag.ProfilePic" alt="">
+                </div>
+            </div>
+            @*<div class="col-md-12 profile-info">
+                    <div class=" profile-info-value">
+                        <h3>1020</h3>
+                        <p>Followers</p>
+                    </div>
+                    <div class=" profile-info-value">
+                        <h3>1780</h3>
+                        <p>Friends</p>
+                    </div>
+                    <div class=" profile-info-value">
+                        <h3>260</h3>
+                        <p>Photos</p>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-3 user-profile">
+                <h3 class="text-center">@ViewBag.FullName</h3>
+                <p class="text-center">Member</p>
+                <hr>
+                <ul class="list-unstyled text-center">
+                    <li><p><i class="fa fa-map-marker m-r-xs"></i>United States</p></li>
+                    <li><p><i class="fa fa-envelope m-r-xs"></i><a href="#">@ViewBag.EmailAddress</a></p></li>
+                    @*<li><p><i class="fa fa-link m-r-xs"></i><a href="#">Household: @ViewBag.HouseholdName</a></p></li>*@
+                </ul>
+                <hr>
+                @*<a href="@Url.Action("Index", "Manage", new { @class = "btn btn-primary btn-block" })"><i class="fa fa-plus m-r-xs"></i>Edit Profile</a>
+                    <a href="@Url.Action("Index", "Manage")"><i class="fa fa-plus m-r-xs"></i>Edit Profile</a>*@
+                <button class="btn btn-primary btn-block"><a href="@Url.Action("Index", "Manage")"><i class="fa fa-plus m-r-xs"></i>Edit Profile</a></button>
+                @*<button class="btn btn-primary btn-block"><i class="fa fa-plus m-r-xs"></i>Follow</button>*@
+            </div>
+
+
+        </div>
+
+
+        <!-- Javascripts -->
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzjeZ1lORVesmjaaFu0EbYeTw84t1_nek"></script>
+        <script src="~/admin1/assets/js/pages/profile.js"></script>
+
+
+        <p>
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    </div>
+</div>

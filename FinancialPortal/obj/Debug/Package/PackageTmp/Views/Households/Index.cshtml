@@ -4,91 +4,105 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-
-<h2>@Model.HouseholdName</h2>
 
 
-@foreach (var member in Model.HouseholdMember)
-{
-    <p>@member.FullName</p>
-}
+   @if (Model.BankAccount.Count != 0)
+   {
+    <div id="main-wrapper">
+
+        <h2>Index</h2>
+
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+
+        <h2>@Model.HouseholdName</h2>
 
 
-
-@*@if (Model.BankAccount.Count() == 0)
-{
-    <p>Before viewing information associated with your household, you must create an account href="@Url.Action("Create", "Accounts")".</p>
-}
-else
-{
-    if (Model.BankAccount.SelectMany(a => a.BankAccountTransactions).Count() == 0)
-    {
-        <p>One last step: click the "new transaction" button to add a transaction.</p>
-    }
-    else
-    {
-        <h2>MY HOUSEHOLD</h2><hr />
-       
-        <h3>@Model.HouseholdName</h3>
+        @foreach (var member in Model.HouseholdMember)
+        {
+            <p>@member.FullName</p>
+        }
 
 
 
+        @*@if (Model.BankAccount.Count() == 0)
+            {
+                <p>Before viewing information associated with your household, you must create an account href="@Url.Action("Create", "Accounts")".</p>
+            }
+            else
+            {
+                if (Model.BankAccount.SelectMany(a => a.BankAccountTransactions).Count() == 0)
+                {
+                    <p>One last step: click the "new transaction" button to add a transaction.</p>
+                }
+                else
+                {
+                    <h2>MY HOUSEHOLD</h2><hr />
 
-
-
-
-
-
-
-    }
-}*@
+                    <h3>@Model.HouseholdName</h3>
 
 
 
 
 
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.HouseholdName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HouseholdDescription)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.HouseholdCreatedDate)
-        </th>
-        <th></th>
-    </tr>
 
 
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => Model.HouseholdName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => Model.HouseholdDescription)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => Model.HouseholdCreatedDate)
-        </td>
-        <td>
-            @Html.ActionLink("Bank Accounts", "Index", "BankAccounts") |
-            @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=Model.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=Model.Id })
-        </td>
-    </tr>
 
 
-</table>
+                }
+            }*@
 
 
-@Html.ActionLink("Invite To Join", "InviteToJoin", "Households") | 
-@Html.ActionLink("Leave Household", "LeaveHousehold", "Households")
+
+
+
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.HouseholdName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HouseholdDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HouseholdCreatedDate)
+                </th>
+                <th></th>
+            </tr>
+
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.HouseholdName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.HouseholdDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.HouseholdCreatedDate)
+                </td>
+                <td>
+                    @Html.ActionLink("Bank Accounts", "Index", "BankAccounts") |
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = Model.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
+                </td>
+            </tr>
+
+
+        </table>
+
+
+        @Html.ActionLink("Invite To Join", "InviteToJoin", "Households") |
+        @Html.ActionLink("Leave Household", "LeaveHousehold", "Households")
+
+    </div>
+
+   }
+   else
+   {
+    <p>Before viewing information associated with your household, you must create an account</p> <a href="@Url.Action("Create", "BankAccounts")">Create an Account</a>
+   }
